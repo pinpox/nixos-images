@@ -1,10 +1,7 @@
 { pkgs, lib, ... }:
 with lib;
-
 {
-  imports = [
-    <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
-  ];
+  imports = [ <nixpkgs/nixos/modules/profiles/qemu-guest.nix> ];
 
   config = {
     fileSystems."/" = {
@@ -18,7 +15,27 @@ with lib;
     boot.loader.grub.device = "/dev/vda";
     boot.loader.timeout = 0;
 
-    users.extraUsers.root.password = "root";
+    programs.ssh.startAgent = false;
 
+    services.openssh = {
+      enable = true;
+      passwordAuthentication = false;
+      startWhenNeeded = true;
+      challengeResponseAuthentication = false;
+    };
+
+    users = {
+      users.root = {
+        password = "root"; # Change me!
+        openssh.authorizedKeys.keyFiles =
+          [ (builtins.fetchurl { url = "https://github.com/pinpox.keys"; }) ];
+      };
+    };
+
+    i18n.defaultLocale = "en_US.UTF-8";
+    console = {
+      font = "Lat2-Terminus16";
+      keyMap = "colemak";
+    };
   };
 }
