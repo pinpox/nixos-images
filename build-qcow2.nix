@@ -14,11 +14,6 @@ with lib;
     pkgs = import <nixpkgs> { inherit (pkgs) system; }; # ensure we use the regular qemu-kvm package
     diskSize = 8192;
     format = "qcow2";
-    configFile = pkgs.writeText "configuration.nix"
-      ''
-        {
-          imports = [ <./machine-config.nix> ];
-        }
-      '';
+    configFile = ./machine-config.nix;
   };
 }

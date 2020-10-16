@@ -1,6 +1,5 @@
 { pkgs, lib, ... }:
-with lib;
-{
+with lib; {
   imports = [ <nixpkgs/nixos/modules/profiles/qemu-guest.nix> ];
 
   config = {
